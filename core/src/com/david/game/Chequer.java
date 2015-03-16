@@ -56,7 +56,7 @@ public class Chequer extends ApplicationAdapter {
         modelBatch = new ModelBatch();
 
         Gdx.gl.glViewport(0, 0, width, height);
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Chequer extends ApplicationAdapter {
     private void initCamera(PerspectiveCamera cam)
     {
 
-        cam.position.set(0f, 0f, 20f);
+        cam.position.set(0f, 0f, 50f);
         cam.lookAt(0,0,0);
         cam.near = 1f;
         cam.far = 300f;
@@ -112,7 +112,7 @@ public class Chequer extends ApplicationAdapter {
 
         Environment     environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, 0f, 0f, -10f));
 
         return environment;
     }
@@ -121,36 +121,51 @@ public class Chequer extends ApplicationAdapter {
     private void createBalls()
     {
 
-
-        ModelBuilder modelBuilder = new ModelBuilder();
-        Model    model = modelBuilder.createSphere(1f, 1f, 1f, 20, 20,
-                new Material(ColorAttribute.createDiffuse(Color.GREEN)),
-                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        int ScaleSize=2;
 
         Board board=new Board();
         board.init();
+        int length=board.cells.length;
+        int radius=(length+1)/2;
 
-        int ScaleSize=2;
+        ModelBuilder modelBuilder = new ModelBuilder();
+        Model    redBall = modelBuilder.createSphere(1f*ScaleSize, 1f*ScaleSize, 1f*ScaleSize, 20, 20,
+                new Material(ColorAttribute.createDiffuse(Color.RED)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
 
-        for(int i=0;i<board.cells.length;i++)
+        Model    greenBall = modelBuilder.createSphere(1f*ScaleSize, 1f*ScaleSize, 1f*ScaleSize, 20, 20,
+                new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+
+
+
+       ScaleSize*=2;
+
+        for(int i=0;i<length;i++)
         {
 
-            for (int j = 0; j < board.cells[i].length; j++) {
-
+            for (int j = 0; j < length; j++) {
+                ModelInstance instance=null;
                 if(board.cells[i][j]>0)
                 {
-
-                    ModelInstance instance=new ModelInstance(model);
-                    instance.transform.setToTranslation((i-9)*ScaleSize, (j-9)*ScaleSize, 0) ;
-                    instances.add(instance);
-
+                      instance=new ModelInstance(greenBall);
+                }else
+                {
+                    instance=new ModelInstance(redBall);
 
                 }
-
-
+                //        instance.transform.translate(i-j*0.5f-9,j,0);
+              instance.transform.translate(-length / 2 * ScaleSize, -length / 2 * ScaleSize, 0).translate((i - j * 0.5f) * ScaleSize, (j) * ScaleSize, 0) ;
+                instances.add(instance);
             }
         }
 
+        Model  chequerBoard= modelBuilder.createCylinder(length*ScaleSize, 1 ,  length*ScaleSize, 20,
+                new Material(ColorAttribute.createDiffuse(Color.BLUE)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        ModelInstance instance =new ModelInstance(chequerBoard);
+        instance.transform.rotate(1,0,0,90);
+        instances.add(instance);
 
 
 
