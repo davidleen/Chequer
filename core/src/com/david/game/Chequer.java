@@ -99,7 +99,7 @@ public class Chequer extends ApplicationAdapter {
     private void initCamera(PerspectiveCamera cam)
     {
 
-        cam.position.set(0f, 0f, 50f);
+        cam.position.set(0f, 0f, 15f);
         cam.lookAt(0,0,0);
         cam.near = 1f;
         cam.far = 300f;
@@ -121,7 +121,7 @@ public class Chequer extends ApplicationAdapter {
     private void createBalls()
     {
 
-        int ScaleSize=2;
+        float ScaleSize=0.5f;
 
         Board board=new Board();
         board.init();
@@ -154,17 +154,17 @@ public class Chequer extends ApplicationAdapter {
                     instance=new ModelInstance(redBall);
 
                 }
-                //        instance.transform.translate(i-j*0.5f-9,j,0);
-              instance.transform.translate(-length / 2 * ScaleSize, -length / 2 * ScaleSize, 0).translate((i - j * 0.5f) * ScaleSize, (j) * ScaleSize, 0) ;
+                       instance.transform.translate(-8,-8,0).translate(i-(j-8)*0.5f ,j,0);
+                //     instance.transform.translate(-length / 2 * ScaleSize, -length / 2 * ScaleSize, 0).translate((i - j * 0.5f) * ScaleSize, (j) * ScaleSize, 0) ;
                 instances.add(instance);
             }
         }
 
-        Model  chequerBoard= modelBuilder.createCylinder(length*ScaleSize, 1 ,  length*ScaleSize, 20,
+        Model  chequerBoard= modelBuilder.createCylinder(length*ScaleSize, 1 ,  length*ScaleSize, 50,
                 new Material(ColorAttribute.createDiffuse(Color.BLUE)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         ModelInstance instance =new ModelInstance(chequerBoard);
-        instance.transform.rotate(1,0,0,90);
+        instance.transform.translate(0,0,-1*ScaleSize).rotate(1,0,0,90);
         instances.add(instance);
 
 
