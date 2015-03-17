@@ -83,16 +83,8 @@ public class Chequer extends ApplicationAdapter {
     @Override
     public void dispose() {
         super.dispose();
-
-
-
-
         instances.clear();
-
-
         modelBatch.dispose();
-
-
     }
 
 
@@ -137,26 +129,51 @@ public class Chequer extends ApplicationAdapter {
                 new Material(ColorAttribute.createDiffuse(Color.GREEN)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
 
+        Model    yellowBall = modelBuilder.createSphere(1f*ScaleSize, 1f*ScaleSize, 1f*ScaleSize, 20, 20,
+                new Material(ColorAttribute.createDiffuse(Color.YELLOW)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        Model    pingBall = modelBuilder.createSphere(1f*ScaleSize, 1f*ScaleSize, 1f*ScaleSize, 20, 20,
+                new Material(ColorAttribute.createDiffuse(Color.PINK)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+
+        Model    grayBall = modelBuilder.createSphere(1f*ScaleSize, 1f*ScaleSize, 1f*ScaleSize, 20, 20,
+                new Material(ColorAttribute.createDiffuse(Color.GRAY)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
 
 
-       ScaleSize*=2;
+        Model    blackBall = modelBuilder.createSphere(1f*ScaleSize, 1f*ScaleSize, 1f*ScaleSize, 20, 20,
+                new Material(ColorAttribute.createDiffuse(Color.BLACK)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+
+
+        Model    whiteBall = modelBuilder.createSphere(1f*ScaleSize, 1f*ScaleSize, 1f*ScaleSize, 20, 20,
+                new Material(ColorAttribute.createDiffuse(Color.WHITE)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+
+        Model[] models=new Model[]{redBall,greenBall,yellowBall,pingBall,grayBall,blackBall,whiteBall};
+
+
+
+       ScaleSize*=2f;
 
         for(int i=0;i<length;i++)
         {
 
             for (int j = 0; j < length; j++) {
                 ModelInstance instance=null;
-                if(board.cells[i][j]>0)
-                {
-                      instance=new ModelInstance(greenBall);
-                }else
-                {
-                    instance=new ModelInstance(redBall);
 
+
+
+                if(board.cells[i][j]>-1)
+                {
+                    //  instance=new ModelInstance(greenBall);
+                    instance=new ModelInstance(models[board.cells[i][j]]);
                 }
-                       instance.transform.translate(-8,-8,0).translate(i-(j-8)*0.5f ,j,0);
-                //     instance.transform.translate(-length / 2 * ScaleSize, -length / 2 * ScaleSize, 0).translate((i - j * 0.5f) * ScaleSize, (j) * ScaleSize, 0) ;
-                instances.add(instance);
+                if(instance!=null) {
+                    instance.transform.translate(-8, -8, 0).translate(i - (j - 8) * 0.5f, j, 0);//
+                    //     instance.transform.translate(-length / 2 * ScaleSize, -length / 2 * ScaleSize, 0).translate((i - j * 0.5f) * ScaleSize, (j) * ScaleSize, 0) ;
+                    instances.add(instance);
+                }
             }
         }
 
