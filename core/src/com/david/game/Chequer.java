@@ -2,6 +2,7 @@ package com.david.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -18,10 +19,15 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.physics.bullet.softbody.btSoftBody;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 import com.david.game.control.Board;
 
-public class Chequer extends ApplicationAdapter {
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.ControllerListener;
+
+public class Chequer  extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 
@@ -37,6 +43,19 @@ public class Chequer extends ApplicationAdapter {
     public ModelBatch modelBatch;
     public ModelInstance space;
     public Array<ModelInstance> instances = new Array<ModelInstance>();
+    private ControllerListener listener = new ControllerAdapter() {
+        @Override
+        public boolean buttonDown(Controller controller, int buttonIndex) {
+
+            return true;
+        }
+
+        @Override
+        public boolean buttonUp(Controller controller, int buttonIndex) {
+
+            return true;
+        }
+    };
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -52,6 +71,8 @@ public class Chequer extends ApplicationAdapter {
         environment=createEnvironment();
 
         controller=createController();
+
+        Gdx.input.setInputProcessor(new InputMultiplexer( controller));
 
         modelBatch = new ModelBatch();
 

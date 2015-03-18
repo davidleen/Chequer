@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "21.1.2"
-    compileSdkVersion 21
+    buildToolsVersion project.androidToolsVersion
+    compileSdkVersion project.androidSDKVersion.toInteger()
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
